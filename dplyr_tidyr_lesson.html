@@ -116,14 +116,14 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Data Wrangling with dplyr and tidyr</h1>
+<h1 class="title toc-ignore">Data Wrangling with <em>dplyr</em> and <em>tidyr</em></h1>
 <h4 class="author"><em>Narayanan Raghupathy</em></h4>
 <h4 class="date"><em>September 13, 2016</em></h4>
 
 </div>
 
 
-<p>This R Markdown document covers some of the basics of data wrangling with dplyr and tidyr using the Software Carpentry lessons.</p>
+<p>This R Markdown document covers some of the basics of data wrangling with <em>dplyr</em> and <em>tidyr</em> using the Software Carpentry <a href="http://swcarpentry.github.io/r-novice-gapminder/">lessons</a> using gapminder data.</p>
 <div id="getting-the-packages-needed" class="section level3">
 <h3>Getting the Packages Needed</h3>
 <p>Let us load (or install) dplyr and tidyr, the R pacakges needed for the session</p>
@@ -210,7 +210,7 @@ typeof(gapminder$gdpPercap)</code></pre>
 <pre><code>## [1] 7136.11</code></pre>
 </div>
 <div id="data-wrangling-with-dplyr" class="section level3">
-<h3>Data Wrangling with dplyr</h3>
+<h3>Data Wrangling with <em>dplyr</em></h3>
 <p>With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,</p>
 <ul>
 <li>select()</li>
@@ -251,7 +251,7 @@ head(year_country_gdp )</code></pre>
 </div>
 </div>
 <div id="using-filter" class="section level3">
-<h3>Using <strong>filter</strong></h3>
+<h3>Using <em>filter</em></h3>
 <pre class="r"><code>year_country_gdp_euro &lt;- gapminder %&gt;%  
     filter(continent==&quot;Europe&quot;) %&gt;%
     select(year,country,gdpPercap)
@@ -266,15 +266,13 @@ dim(year_country_gdp_euro )</code></pre>
 ## 5 1972 Albania  3313.422
 ## 6 1977 Albania  3533.004</code></pre>
 </div>
-<div id="dplyr-challenge-1" class="section level3">
-<h3>dplyr challenge 1</h3>
+<div id="dplyr-challenge-using-filter-and-select" class="section level3">
+<h3><em>dplyr</em> challenge: using <em>filter</em> and <em>select</em></h3>
+<p>Use <em>dplyr</em>’s <em>filter</em> and <em>select</em> functions to get year-wise life expectancy for the countries in Africa.</p>
 <pre class="r"><code>year_country_life_africa &lt;- gapminder %&gt;%  
     filter(continent==&quot;Africa&quot;) %&gt;%
-    select(year,country,lifeExp)</code></pre>
-</div>
-<div id="dplyr-example-2" class="section level3">
-<h3>dplyr example 2</h3>
-<pre class="r"><code>head(year_country_life_africa)</code></pre>
+    select(year,country,lifeExp)
+head(year_country_life_africa)</code></pre>
 <pre><code>##   year country lifeExp
 ## 1 1952 Algeria  43.077
 ## 2 1957 Algeria  45.685
@@ -284,31 +282,25 @@ dim(year_country_gdp_euro )</code></pre>
 ## 6 1977 Algeria  58.014</code></pre>
 <pre class="r"><code>dim(year_country_life_africa)</code></pre>
 <pre><code>## [1] 624   3</code></pre>
-<pre class="r"><code>str(gapminder %&gt;% group_by(continent))</code></pre>
-<pre><code>## Classes 'grouped_df', 'tbl_df', 'tbl' and 'data.frame':  1704 obs. of  6 variables:
-##  $ country  : chr  &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; &quot;Afghanistan&quot; ...
-##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
-##  $ pop      : num  8425333 9240934 10267083 11537966 13079460 ...
-##  $ continent: chr  &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; &quot;Asia&quot; ...
-##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
-##  $ gdpPercap: num  779 821 853 836 740 ...
-##  - attr(*, &quot;vars&quot;)=List of 1
-##   ..$ : symbol continent
-##  - attr(*, &quot;drop&quot;)= logi TRUE
-##  - attr(*, &quot;indices&quot;)=List of 5
-##   ..$ : int  24 25 26 27 28 29 30 31 32 33 ...
-##   ..$ : int  48 49 50 51 52 53 54 55 56 57 ...
-##   ..$ : int  0 1 2 3 4 5 6 7 8 9 ...
-##   ..$ : int  12 13 14 15 16 17 18 19 20 21 ...
-##   ..$ : int  60 61 62 63 64 65 66 67 68 69 ...
-##  - attr(*, &quot;group_sizes&quot;)= int  624 300 396 360 24
-##  - attr(*, &quot;biggest_group_size&quot;)= int 624
-##  - attr(*, &quot;labels&quot;)='data.frame':   5 obs. of  1 variable:
-##   ..$ continent: chr  &quot;Africa&quot; &quot;Americas&quot; &quot;Asia&quot; &quot;Europe&quot; ...
-##   ..- attr(*, &quot;vars&quot;)=List of 1
-##   .. ..$ : symbol continent
-##   ..- attr(*, &quot;drop&quot;)= logi TRUE</code></pre>
-<pre class="r"><code>gapminder %&gt;% group_by(continent) %&gt;% summarize(mean_gdpPercap=mean(gdpPercap))</code></pre>
+</div>
+<div id="using-group_by-function" class="section level3">
+<h3>Using <em>group_by</em> function</h3>
+<pre class="r"><code>head(gapminder %&gt;% group_by(continent))</code></pre>
+<pre><code>## Source: local data frame [6 x 6]
+## Groups: continent [1]
+## 
+##       country  year      pop continent lifeExp gdpPercap
+##         &lt;chr&gt; &lt;int&gt;    &lt;dbl&gt;     &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Afghanistan  1952  8425333      Asia  28.801  779.4453
+## 2 Afghanistan  1957  9240934      Asia  30.332  820.8530
+## 3 Afghanistan  1962 10267083      Asia  31.997  853.1007
+## 4 Afghanistan  1967 11537966      Asia  34.020  836.1971
+## 5 Afghanistan  1972 13079460      Asia  36.088  739.9811
+## 6 Afghanistan  1977 14880372      Asia  38.438  786.1134</code></pre>
+</div>
+<div id="compute-mean-gdp-of-all-continents-with-group_by-and-summarize" class="section level3">
+<h3>Compute mean GDP of all continents with group_by and summarize</h3>
+<pre class="r"><code>gapminder %&gt;% group_by(continent) %&gt;%    summarize(mean_gdpPercap=mean(gdpPercap))</code></pre>
 <pre><code>## # A tibble: 5 x 2
 ##   continent mean_gdpPercap
 ##       &lt;chr&gt;          &lt;dbl&gt;
@@ -317,21 +309,7 @@ dim(year_country_gdp_euro )</code></pre>
 ## 3      Asia       7902.150
 ## 4    Europe      14469.476
 ## 5   Oceania      18621.609</code></pre>
-<pre class="r"><code>gapminder %&gt;% group_by(country) %&gt;% summarize(mean_lifeExp=mean(lifeExp))</code></pre>
-<pre><code>## # A tibble: 142 x 2
-##        country mean_lifeExp
-##          &lt;chr&gt;        &lt;dbl&gt;
-## 1  Afghanistan     37.47883
-## 2      Albania     68.43292
-## 3      Algeria     59.03017
-## 4       Angola     37.88350
-## 5    Argentina     69.06042
-## 6    Australia     74.66292
-## 7      Austria     73.10325
-## 8      Bahrain     65.60567
-## 9   Bangladesh     49.83408
-## 10     Belgium     73.64175
-## # ... with 132 more rows</code></pre>
+<pre class="r"><code>mean_lifeexp_country=gapminder %&gt;% group_by(country) %&gt;%  summarize(mean_lifeExp=mean(lifeExp))</code></pre>
 <pre class="r"><code>gdp_pop_bycontinents_byyear &lt;- gapminder %&gt;% group_by(continent,year) %&gt;%
     summarize(mean_gdpPercap=mean(gdpPercap),
               sd_gdpPercap=sd(gdpPercap),
@@ -352,7 +330,19 @@ print(head(gdp_pop_bycontinents_byyear))</code></pre>
 <pre class="r"><code>gdp_pop_bycontinents_byyear &lt;- gapminder %&gt;% 
                   group_by(continent,year) %&gt;%
                   summarize(mean_gdpPercap=mean(gdpPercap),
-                            mean_pop=mean(pop))</code></pre>
+                            mean_pop=mean(pop))
+head(gdp_pop_bycontinents_byyear)</code></pre>
+<pre><code>## Source: local data frame [6 x 4]
+## Groups: continent [1]
+## 
+##   continent  year mean_gdpPercap mean_pop
+##       &lt;chr&gt; &lt;int&gt;          &lt;dbl&gt;    &lt;dbl&gt;
+## 1    Africa  1952       1252.572  4570010
+## 2    Africa  1957       1385.236  5093033
+## 3    Africa  1962       1598.079  5702247
+## 4    Africa  1967       2050.364  6447875
+## 5    Africa  1972       2339.616  7305376
+## 6    Africa  1977       2585.939  8328097</code></pre>
 <pre class="r"><code>gdp_pop_bycontinents_byyear &lt;- gapminder %&gt;%
     mutate(gdp_billion=gdpPercap*pop/10^9) %&gt;%
     group_by(continent,year) %&gt;%

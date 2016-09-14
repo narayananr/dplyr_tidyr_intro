@@ -1,11 +1,11 @@
 ---
-title: "Data Wrangling with dplyr and tidyr"
+title: "Data Wrangling with *dplyr* and *tidyr*"
 author: "Narayanan Raghupathy"
 date: "September 13, 2016"
 output: html_document
 ---
 
-This R Markdown document covers some of the basics of data wrangling with dplyr and tidyr using the Software Carpentry lessons.
+This R Markdown document covers some of the basics of data wrangling with *dplyr* and *tidyr* using the Software Carpentry [lessons](http://swcarpentry.github.io/r-novice-gapminder/) using gapminder data.
 
 ### Getting the Packages Needed
 
@@ -68,7 +68,7 @@ mean(gapminder[gapminder$continent=="Africa","gdpPercap"])
 mean(gapminder[gapminder$continent=="Americas","gdpPercap"])
 ```
 
-### Data Wrangling with dplyr
+### Data Wrangling with *dplyr*
 
 With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,
 
@@ -96,7 +96,7 @@ head(year_country_gdp )
 dim(year_country_gdp )
 ```
 
-### Using **filter** 
+### Using *filter*
 
 ```{r dplyr_dilter_select_pipe}
 year_country_gdp_euro <- gapminder %>%  
@@ -105,21 +105,31 @@ year_country_gdp_euro <- gapminder %>%
 dim(year_country_gdp_euro )
 head(year_country_gdp_euro)
 ```
-### dplyr challenge 1
+### *dplyr* challenge: using *filter* and *select*
+
+Use *dplyr*'s *filter* and *select* functions to get year-wise life expectancy for the countries in Africa.
+
 ```{r dplyr_pipe_challenge1}
 year_country_life_africa <- gapminder %>%  
     filter(continent=="Africa") %>%
     select(year,country,lifeExp)
-```
-
-### dplyr example 2
-
-```{r dplyr_pipe_example2}
 head(year_country_life_africa)
 dim(year_country_life_africa)
-str(gapminder %>% group_by(continent))
-gapminder %>% group_by(continent) %>% summarize(mean_gdpPercap=mean(gdpPercap))
-gapminder %>% group_by(country) %>% summarize(mean_lifeExp=mean(lifeExp))
+```
+
+### Using *group_by* function
+
+```{r dplyr_group_by}
+head(gapminder %>% group_by(continent))
+```
+### Compute mean GDP of all continents with group_by and summarize
+
+```{r mean_gdp_continent_dplyr}
+gapminder %>% group_by(continent) %>%    summarize(mean_gdpPercap=mean(gdpPercap))
+```
+
+```{r mean_lifeexp_by_country}
+mean_lifeexp_country=gapminder %>% group_by(country) %>%  summarize(mean_lifeExp=mean(lifeExp))
 ```
 
 ```{r_dplyr_example_group_by_2}
@@ -133,6 +143,7 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
                   group_by(continent,year) %>%
                   summarize(mean_gdpPercap=mean(gdpPercap),
                             mean_pop=mean(pop))
+head(gdp_pop_bycontinents_byyear)
 ```
 
 ```{r_example3}
