@@ -213,11 +213,11 @@ typeof(gapminder$gdpPercap)</code></pre>
 <h3>Data Wrangling with <em>dplyr</em></h3>
 <p>With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,</p>
 <ul>
-<li>select()</li>
-<li>filter()</li>
-<li>summarize()</li>
-<li>mutate()</li>
-<li>group_by()</li>
+<li>select(): focus on a subset of variables</li>
+<li>filter(): focus on a subset of rows</li>
+<li>summarize():reduce each group to a smaller number of summary statistics</li>
+<li>mutate(): add new columns</li>
+<li>group_by(): allows for group operations</li>
 </ul>
 <p>We will use some of these functions to manipulate the data frame and get computing the mean GDP of continents with dplyr.</p>
 </div>
@@ -309,7 +309,25 @@ head(year_country_life_africa)</code></pre>
 ## 3      Asia       7902.150
 ## 4    Europe      14469.476
 ## 5   Oceania      18621.609</code></pre>
-<pre class="r"><code>mean_lifeexp_country=gapminder %&gt;% group_by(country) %&gt;%  summarize(mean_lifeExp=mean(lifeExp))</code></pre>
+</div>
+<div id="compute-mean-life-expectancy-of-all-countries-with-group_by-and-summarize" class="section level3">
+<h3>Compute mean Life Expectancy of all countries with group_by and summarize</h3>
+<pre class="r"><code>mean_lifeexp_country=gapminder %&gt;% group_by(country) %&gt;%  summarize(mean_lifeExp=mean(lifeExp))
+mean_lifeexp_country</code></pre>
+<pre><code>## # A tibble: 142 x 2
+##        country mean_lifeExp
+##          &lt;chr&gt;        &lt;dbl&gt;
+## 1  Afghanistan     37.47883
+## 2      Albania     68.43292
+## 3      Algeria     59.03017
+## 4       Angola     37.88350
+## 5    Argentina     69.06042
+## 6    Australia     74.66292
+## 7      Austria     73.10325
+## 8      Bahrain     65.60567
+## 9   Bangladesh     49.83408
+## 10     Belgium     73.64175
+## # ... with 132 more rows</code></pre>
 <pre class="r"><code>gdp_pop_bycontinents_byyear &lt;- gapminder %&gt;% group_by(continent,year) %&gt;%
     summarize(mean_gdpPercap=mean(gdpPercap),
               sd_gdpPercap=sd(gdpPercap),

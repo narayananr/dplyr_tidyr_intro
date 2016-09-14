@@ -72,13 +72,13 @@ mean(gapminder[gapminder$continent=="Americas","gdpPercap"])
 
 With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,
 
-* select()
-* filter()
-* summarize()
-* mutate()
-* group_by()
+* select():  focus on a subset of variables
+* filter():  focus on a subset of rows
+* summarize():reduce each group to a smaller number of summary statistics
+* mutate(): add new columns
+* group_by(): allows for group operations
 
-We will use some of these functions to manipulate the data frame and get computing the mean GDP of continents with dplyr.
+We will use some of these functions to manipulate the data frame and get computing the mean GDP of continents with dplyr.  
 
 ### Select specific columns of a dataframe
 
@@ -122,14 +122,18 @@ dim(year_country_life_africa)
 ```{r dplyr_group_by}
 head(gapminder %>% group_by(continent))
 ```
+
 ### Compute mean GDP of all continents with group_by and summarize
 
 ```{r mean_gdp_continent_dplyr}
 gapminder %>% group_by(continent) %>%    summarize(mean_gdpPercap=mean(gdpPercap))
 ```
 
+### Compute mean Life Expectancy of all countries with group_by and summarize
+
 ```{r mean_lifeexp_by_country}
 mean_lifeexp_country=gapminder %>% group_by(country) %>%  summarize(mean_lifeExp=mean(lifeExp))
+mean_lifeexp_country
 ```
 
 ```{r_dplyr_example_group_by_2}
