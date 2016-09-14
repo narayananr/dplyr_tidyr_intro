@@ -1,0 +1,186 @@
+---
+title: "Data Wrangling with *dplyr* and *tidyr*"
+author: "Narayanan Raghupathy"
+date: "September 13, 2016"
+output: html_document
+---
+
+This R Markdown document covers some of the basics of data wrangling with *dplyr* and *tidyr* using the Software Carpentry [lessons](http://swcarpentry.github.io/r-novice-gapminder/) using gapminder data.
+
+### Getting the Packages Needed
+
+Let us load (or install) dplyr and tidyr, the R pacakges needed for the session
+
+```{r load_r_packages}
+#install.packages("tidyr")
+#install.packages("dplyr")
+library("tidyr")
+library("dplyr")
+```
+
+We will be using the [gapminder](https://www.gapminder.org/) data set. We will first use use the  
+
+*  [gapminder-FiveYearData](https://raw.githubusercontent.com/resbaz/r-novice-gapminder-files/master/data/gapminder-FiveYearData.csv)
+
+
+and then we will use the 
+
+* [gapminder-FiveYearData-Wide](https://raw.githubusercontent.com/rachelss/r-novice-gapminder/gh-pages/data/gapminder_wide.csv)
+
+[gapminder-FiveYearData](https://raw.githubusercontent.com/resbaz/r-novice-gapminder-files/master/data/gapminder-FiveYearData.csv) is stored as CSV file. Let us first load it using **read.csv** command 
+ 
+```{r load_gapminder_data}
+gapminder <- read.csv("gapminder-FiveYearData.csv",stringsAsFactors = FALSE)
+```
+
+and examine the structure of the data using **str* command. We can see that this data frame contains five columns, with names
+
+* country
+* year
+* pop
+* continent
+* lifeExp
+* gdpPercap
+
+```{r explore_gapminder_data}
+print(str(gapminder))
+```
+
+```{r head_gapminder_data}
+print(head(gapminder))
+#print(dim(gapminder))
+typeof(gapminder$gdpPercap)
+```
+
+## What is the average GDP per capita per continent?
+
+Let us say, we want to compute average GDP of continents using the dataframe.
+
+### Computing mean GDP of Continents: Old way
+
+
+```{r mean_gdp1}
+head(gapminder)
+head(gapminder[gapminder$continent=="Asia",])
+head(gapminder[gapminder$continent=="Asia","gdpPercap"])
+mean(gapminder[gapminder$continent=="Asia","gdpPercap"])
+mean(gapminder[gapminder$continent=="Africa","gdpPercap"])
+mean(gapminder[gapminder$continent=="Americas","gdpPercap"])
+```
+
+### Data Wrangling with *dplyr*
+
+With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,
+
+* select():  focus on a subset of variables
+* filter():  focus on a subset of rows
+* summarize():reduce each group to a smaller number of summary statistics
+* mutate(): add new columns
+* group_by(): allows for group operations
+
+We will use some of these functions to manipulate the data frame and get computing the mean GDP of continents with dplyr.  
+
+### Select specific columns of a dataframe
+
+```{r dplyr_select}
+year_country_gdp <- select(gapminder,year,country,gdpPercap) 
+head(year_country_gdp)
+```
+
+### %>%: Pipe operator
+#### Select specific columns of a dataframe using %>%, the pipe operator
+
+```{r dplyr_select_with_pipe}
+year_country_gdp <- gapminder %>% select(year,country,gdpPercap)
+head(year_country_gdp )
+dim(year_country_gdp )
+```
+
+### Using *filter*
+
+```{r dplyr_dilter_select_pipe}
+year_country_gdp_euro <- gapminder %>%  
+    filter(continent=="Europe") %>%
+    select(year,country,gdpPercap)
+dim(year_country_gdp_euro )
+head(year_country_gdp_euro)
+```
+### *dplyr* challenge: using *filter* and *select*
+
+Use *dplyr*'s *filter* and *select* functions to get year-wise life expectancy for the countries in Africa.
+
+```{r dplyr_pipe_challenge1}
+year_country_life_africa <- gapminder %>%  
+    filter(continent=="Africa") %>%
+    select(year,country,lifeExp)
+head(year_country_life_africa)
+dim(year_country_life_africa)
+```
+
+### Using *group_by* function
+
+```{r dplyr_group_by}
+head(gapminder %>% group_by(continent))
+```
+
+### Compute mean GDP of all continents with group_by and summarize
+
+```{r mean_gdp_continent_dplyr}
+gapminder %>% group_by(continent) %>%    summarize(mean_gdpPercap=mean(gdpPercap))
+```
+
+### Compute mean Life Expectancy of all countries with group_by and summarize
+
+```{r mean_lifeexp_by_country}
+mean_lifeexp_country=gapminder %>% group_by(country) %>%  summarize(mean_lifeExp=mean(lifeExp))
+mean_lifeexp_country
+```
+
+```{r_dplyr_example_group_by_2}
+gdp_pop_bycontinents_byyear <- gapminder %>% group_by(continent,year) %>%
+    summarize(mean_gdpPercap=mean(gdpPercap),
+              sd_gdpPercap=sd(gdpPercap),
+              mean_pop=mean(pop),
+              sd_pop=sd(pop))
+print(head(gdp_pop_bycontinents_byyear))
+gdp_pop_bycontinents_byyear <- gapminder %>% 
+                  group_by(continent,year) %>%
+                  summarize(mean_gdpPercap=mean(gdpPercap),
+                            mean_pop=mean(pop))
+head(gdp_pop_bycontinents_byyear)
+```
+
+```{r_example3}
+gdp_pop_bycontinents_byyear <- gapminder %>%
+    mutate(gdp_billion=gdpPercap*pop/10^9) %>%
+    group_by(continent,year) %>%
+    summarize(mean_gdpPercap=mean(gdpPercap),
+              sd_gdpPercap=sd(gdpPercap),
+              mean_pop=mean(pop),
+              sd_pop=sd(pop),
+              mean_gdp_billion=mean(gdp_billion),
+              sd_gdp_billion=sd(gdp_billion))
+print(gdp_pop_bycontinents_byyear)
+```
+
+
+```{r wide_data}
+head(gapminder)
+dim(gapminder)
+gap_wide <- read.csv("gapminder_wide.csv",stringsAsFactors = FALSE)
+head(gap_wide)
+dim(gap_wide)
+gap_long <- gap_wide %>%
+    gather(obstype_year, obs_values, starts_with('pop'),
+           starts_with('lifeExp'), starts_with('gdpPercap'))
+head(gap_long)
+dim(gap_long)
+gap_long <- gap_wide %>% gather(obstype_year,obs_values,-continent,-country)
+gap_long <- gap_long %>% separate(obstype_year,into=c('obs_type','year'),sep="_")
+str(gap_long)
+gap_long$year <- as.integer(gap_long$year)
+gap_long %>% group_by(continent,obs_type)%>%  summarize(means=mean(obs_values))
+head(gap_long %>% spread(obs_type,obs_values) %>% arrange(country,continent,year))
+head(gap_long)
+head(gap_long %>% spread(obs_type,obs_values) %>% arrange(country,continent,year))
+```
