@@ -181,6 +181,7 @@ typeof(gapminder$gdpPercap)</code></pre>
 </div>
 <div id="what-is-the-average-gdp-per-capita-per-continent" class="section level2">
 <h2>What is the average GDP per capita per continent?</h2>
+<p>Let us say, we want to compute average GDP of continents using the dataframe.</p>
 <div id="computing-mean-gdp-of-continents-old-way" class="section level3">
 <h3>Computing mean GDP of Continents: Old way</h3>
 <pre class="r"><code>head(gapminder)</code></pre>
@@ -210,7 +211,7 @@ typeof(gapminder$gdpPercap)</code></pre>
 </div>
 <div id="data-wrangling-with-dplyr" class="section level3">
 <h3>Data Wrangling with dplyr</h3>
-<p>With dplyr package, we can manipulate dataframes much eaxily without repeating ourselves too much. dplyr packages has the following six basic functions/operations</p>
+<p>With dplyr package, we can manipulate dataframes much easily without repeating ourselves too much. dplyr packages has the following six basic functions/operations,</p>
 <ul>
 <li>select()</li>
 <li>filter()</li>
@@ -218,7 +219,7 @@ typeof(gapminder$gdpPercap)</code></pre>
 <li>mutate()</li>
 <li>group_by()</li>
 </ul>
-<p>We will use some of these functions to manipulate the data frame.</p>
+<p>We will use some of these functions to manipulate the data frame and get computing the mean GDP of continents with dplyr.</p>
 </div>
 <div id="select-specific-columns-of-a-dataframe" class="section level3">
 <h3>Select specific columns of a dataframe</h3>
@@ -249,8 +250,8 @@ head(year_country_gdp )</code></pre>
 <pre><code>## [1] 1704    3</code></pre>
 </div>
 </div>
-<div id="section" class="section level3">
-<h3></h3>
+<div id="using-filter" class="section level3">
+<h3>Using <strong>filter</strong></h3>
 <pre class="r"><code>year_country_gdp_euro &lt;- gapminder %&gt;%  
     filter(continent==&quot;Europe&quot;) %&gt;%
     select(year,country,gdpPercap)
